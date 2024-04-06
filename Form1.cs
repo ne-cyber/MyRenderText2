@@ -221,8 +221,44 @@ namespace MyRenderText2
 
         private void Form1_MouseClick(object sender, MouseEventArgs e)
         {
-            
+            for (int i = 0; i <= text.Length; i++)
+            {
+                String text1 = text.Substring(0, i);
+                SizeF text1Size = new SizeF(0, 0);
+                text1Size = CalculateTextSize(text1, 0, text1.Length);
+
+                String lastLine = "";
+                String[] text1Lines = text1.Split('\r');
+                lastLine = text1Lines[text1Lines.Length - 1];
+                SizeF lastLineSize = new SizeF(0, 0);
+                lastLineSize = CalculateTextSize(lastLine, 0, lastLine.Length);
+
+                SizeF size = new SizeF(0, 0);
+                size.Height = text1Size.Height;
+                size.Width = lastLineSize.Width;
+
+                Rectangle rect = new Rectangle(location.X, location.Y, (int)size.Width, (int)size.Height);
+
+                if(rect.Contains(e.Location))
+                {
+                    index = i;
+
+                    Point caretPos = new Point(0, 0);
+                    caretPos = this.GetCaretPos();
+                    Win32.HideCaret(this.Handle);
+                    Win32.SetCaretPos(caretPos.X, caretPos.Y);
+                    Win32.ShowCaret(this.Handle);
+
+                    break;
+                }
+
+            }
+
 
         }
+
+
+
+
     }
 }
